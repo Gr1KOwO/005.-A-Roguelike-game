@@ -85,36 +85,29 @@ public class Restart : MonoBehaviour
 
         if (!string.IsNullOrEmpty(playerName))
         {
-            // —оздаем объект PlayerData дл€ текущего игрока
             PlayerData playerData = new PlayerData();
             playerData.playerName = playerName;
 
-            // ѕолучаем текущие данные об игроках
             string allPlayerNames = PlayerPrefs.GetString("AllPlayerNames", "");
 
-            // ѕровер€ем, есть ли уже данные дл€ этого игрока
             if (allPlayerNames.Contains(playerName))
             {
-                // ≈сли данные уже есть, загружаем их и обновл€ем пройденные уровни
+
                 string json = PlayerPrefs.GetString(playerName);
                 playerData = JsonUtility.FromJson<PlayerData>(json);
 
-                // ѕример сохранени€ информации о пройденном уровне
                 string completedLevel = $"Level: {LevelManager.Instance.GetLevel()}";
                 playerData.completedLevels = completedLevel;
             }
             else
             {
-                // ≈сли данных дл€ этого игрока еще нет, сохран€ем только новые пройденные уровни
                 string completedLevel = $"Level: {LevelManager.Instance.GetLevel()}";
                 playerData.completedLevels = completedLevel;
 
-                // ƒобавл€ем им€ игрока в список всех игроков
                 allPlayerNames += (allPlayerNames.Length > 0 ? ";" : "") + playerName;
                 PlayerPrefs.SetString("AllPlayerNames", allPlayerNames);
             }
 
-            // —охран€ем или обновл€ем данные текущего игрока
             string dataJson = JsonUtility.ToJson(playerData);
             PlayerPrefs.SetString(playerName, dataJson);
 
