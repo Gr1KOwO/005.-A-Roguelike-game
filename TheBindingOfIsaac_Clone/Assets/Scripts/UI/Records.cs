@@ -15,26 +15,20 @@ public class Records : MonoBehaviour
 
     private void LoadPlayerRecords()
     {
-        // ќчищаем содержимое ScrollView перед загрузкой новых записей
         foreach (Transform child in contentArea)
         {
             Destroy(child.gameObject);
         }
 
-        // ѕолучаем строку со всеми именами игроков
         string allPlayerNames = PlayerPrefs.GetString("AllPlayerNames", "");
 
-        // –азбиваем строку на массив имен игроков
         string[] playerNames = allPlayerNames.Split(';');
 
-        // ѕроходимс€ по каждому имени игрока и создаем запись дл€ него
         foreach (string playerName in playerNames)
         {
-            // ѕолучаем данные игрока по его имени
             string jsonData = PlayerPrefs.GetString(playerName);
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(jsonData);
 
-            // —оздаем запись дл€ каждого игрока и добавл€ем ее в ScrollView
             GameObject playerRecord = Instantiate(playerRecordPrefab, contentArea);
             PlayerRecordUI playerRecordUI = playerRecord.GetComponent<PlayerRecordUI>();
             playerRecordUI.SetPlayerRecord(playerData.playerName, playerData.completedLevels);
